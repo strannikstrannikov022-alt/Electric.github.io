@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TANKIST — Портфолио электрика</title>
+<meta name="description" content="TANKIST — профессиональные электромонтажные работы в Грозном. Портфолио проектов.">
+<meta property="og:title" content="TANKIST — Электрика под ключ">
+<meta property="og:description" content="Профессиональные электромонтажные работы в Грозном. Смотрите наши проекты!">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a25', 600: '#252530' },
+        accent: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04' }
+      }
+    }
+  }
+}
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:#0a0a0f; color:#fff; overflow-x:hidden; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:#12121a; }
+::-webkit-scrollbar-thumb { background:#facc15; border-radius:4px; }
+
+.glow { text-shadow:0 0 20px rgba(250,204,21,0.5),0 0 40px rgba(250,204,21,0.2); }
+.card-hover { transition:all .3s ease; }
+.card-hover:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(250,204,21,0.15); }
+
+/* Modal */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(8px); }
+.modal-overlay.active { display:flex; }
+.modal-content { background:#12121a; border:1px solid #252530; border-radius:16px; width:100%; max-width:500px; max-height:90vh; overflow-y:auto; }
+
+/* Image preview in modal */
+.img-preview { width:100%; height:200px; border:2px dashed #252530; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .3s; overflow:hidden; position:relative; }
+.img-preview:hover { border-color:#facc15; }
+.img-preview img { width:100%; height:100%; object-fit:cover; }
+.img-preview .placeholder { text-align:center; color:#666; }
+
+/* Gallery lightbox */
+.lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:200; display:none; align-items:center; justify-content:center; padding:16px; }
+.lightbox.active { display:flex; }
+.lightbox img { max-width:100%; max-height:85vh; object-fit:contain; border-radius:8px; }
+
+/* Project card image */
+.project-img { width:100%; height:220px; object-fit:cover; }
+
+/* Status badge */
+.badge { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+
+/* Tab buttons */
+.tab-btn { transition:all .3s; }
+.tab-btn.active { background:#facc15; color:#0a0a0f; }
+
+/* Fade in animation */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.fade-up { animation:fadeUp .5s ease forwards; }
+
+/* Photo grid for multiple images */
+.photo-grid { display:grid; gap:4px; }
+.photo-grid.grid-1 { grid-template-columns:1fr; }
+.photo-grid.grid-2 { grid-template-columns:1fr 1fr; }
+.photo-grid.grid-3 { grid-template-columns:1fr 1fr; }
+.photo-grid.grid-3 > :first-child { grid-column:span 2; }
+.photo-grid.grid-4 { grid-template-columns:1fr 1fr; }
+.photo-grid img { width:100%; height:100%; object-fit:cover; cursor:pointer; transition:opacity .2s; }
+.photo-grid img:hover { opacity:.85; }
+.photo-grid.grid-1 img { height:250px; }
+.photo-grid.grid-2 img { height:200px; }
+.photo-grid.grid-3 img { height:160px; }
+.photo-grid.grid-3 > :first-child img { height:180px; }
+.photo-grid.grid-4 img { height:150px; }
+
+/* Multiple image upload preview */
+.upload-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.upload-thumb { position:relative; border-radius:8px; overflow:hidden; height:80px; }
+.upload-thumb img { width:100%; height:100%; object-fit:cover; }
+.upload-thumb .remove-btn { position:absolute; top:2px; right:2px; width:20px; height:20px; background:rgba(239,68,68,0.9); border:none; border-radius:50%; color:#fff; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+/* Bottom nav for mobile */
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#12121a; border-top:1px solid #252530; padding:8px 0; padding-bottom:max(8px, env(safe-area-inset-bottom)); z-index:50; }
+
+/* Swipe hint */
+.swipe-indicator { width:36px; height:4px; background:#333; border-radius:2px; margin:0 auto 8px; }
+
+/* Empty state */
+.empty-state { text-align:center; padding:60px 20px; }
+
+/* Delete confirmation */
+.delete-confirm { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:12px; padding:16px; margin-top:12px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-dark-900/95 backdrop-blur-md border-b border-dark-600">
+  <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-accent-400 rounded-lg flex items-center justify-center">
+        <i class="fas fa-bolt text-dark-900 text-sm"></i>
+      </div>
+      <span class="font-bold text-lg">TANKIST</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="tel:+79298871237" class="w-9 h-9 bg-dark-700 rounded-full flex items-center justify-center text-accent-400 text-sm">
+        <i class="fas fa-phone"></i>
+      </a>
+      <a href="https://wa.me/79298871237" target="_blank" class="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white text-sm">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="max-w-lg mx-auto pt-16 pb-20">
+
+  <!-- PROFILE SECTION -->
+  <section class="px-4 py-6 border-b border-dark-700">
+    <div class="flex items-center gap-4">
+      <div class="w-16 h-16 bg-gradient-to-br from-accent-400 to-accent-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+        <i class="fas fa-bolt text-dark-900 text-2xl"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold">TANKIST</h1>
+        <p class="text-sm text-gray-400">Электромонтажные работы • Грозный</p>
+        <div class="flex items-center gap-1 mt-1">
+          <i class="fas fa-star text-accent-400 text-xs"></i>
+          <i class="fas fa-star text-accent-400 text-xs"></i>
+          <i class="fas fa-star text-accent-400 text-xs"></i>
+          <i class="fas fa-star text-accent-400 text-xs"></i>
+          <i class="fas fa-star text-accent-400 text-xs"></i>
+          <span class="text-xs text-gray-400 ml-1">5.0</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-sm text-gray-300 mt-4 leading-relaxed">
+      Профессиональный монтаж электросетей под ключ: от ввода питания до финальной установки розеток и освещения. Каждый проект — индивидуально.
+    </p>
+    <div class="flex flex-wrap gap-2 mt-3">
+      <span class="badge bg-accent-400/10 text-accent-400"><i class="fas fa-shield-halved mr-1"></i>Гарантия 5 лет</span>
+      <span class="badge bg-green-500/10 text-green-400"><i class="fas fa-check mr-1"></i>По нормам ПУЭ</span>
+      <span class="badge bg-blue-500/10 text-blue-400"><i class="fas fa-clock mr-1"></i>Точно в срок</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="px-4 py-4 border-b border-dark-700">
+    <div class="grid grid-cols-4 gap-2 text-center">
+      <div class="bg-dark-800 rounded-xl py-3 px-1">
+        <div class="text-accent-400 font-bold text-lg" id="stat-projects">0</div>
+        <div class="text-[10px] text-gray-500 mt-0.5">Проектов</div>
+      </div>
+      <div class="bg-dark-800 rounded-xl py-3 px-1">
+        <div class="text-accent-400 font-bold text-lg">10+</div>
+        <div class="text-[10px] text-gray-500 mt-0.5">Лет опыта</div>
+      </div>
+      <div class="bg-dark-800 rounded-xl py-3 px-1">
+        <div class="text-accent-400 font-bold text-lg">300+</div>
+        <div class="text-[10px] text-gray-500 mt-0.5">Объектов</div>
+      </div>
+      <div class="bg-dark-800 rounded-xl py-3 px-1">
+        <div class="text-accent-400 font-bold text-lg">100%</div>
+        <div class="text-[10px] text-gray-500 mt-0.5">По нормам</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABS -->
+  <section class="px-4 pt-4 pb-2 sticky top-[57px] bg-dark-900 z-40">
+    <div class="flex gap-2">
+      <button class="tab-btn active flex-1 py-2 rounded-xl text-sm font-semibold bg-dark-700 text-gray-400" onclick="switchTab('projects')" id="tab-projects">
+        <i class="fas fa-images mr-1"></i>Проекты
+      </button>
+      <button class="tab-btn flex-1 py-2 rounded-xl text-sm font-semibold bg-dark-700 text-gray-400" onclick="switchTab('services')" id="tab-services">
+        <i class="fas fa-wrench mr-1"></i>Услуги
+      </button>
+      <button class="tab-btn flex-1 py-2 rounded-xl text-sm font-semibold bg-dark-700 text-gray-400" onclick="switchTab('contact')" id="tab-contact">
+        <i class="fas fa-phone mr-1"></i>Контакты
+      </button>
+    </div>
+  </section>
+
+  <!-- TAB: PROJECTS -->
+  <section id="content-projects" class="px-4 py-4">
+    <!-- Add project button -->
+    <button onclick="openAddModal()" class="w-full py-3 border-2 border-dashed border-dark-600 rounded-2xl text-gray-400 hover:border-accent-400 hover:text-accent-400 transition-all mb-4 text-sm font-medium">
+      <i class="fas fa-plus mr-2"></i>Добавить проект
+    </button>
+
+    <!-- Projects list -->
+    <div id="projects-list" class="space-y-4">
+      <!-- Projects will be rendered here -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="empty-state hidden">
+      <div class="w-20 h-20 bg-dark-800 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-camera text-3xl text-gray-600"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-400 mb-2">Пока нет проектов</h3>
+      <p class="text-sm text-gray-600 mb-4">Добавьте свой первый проект —<br>покажите клиентам вашу работу</p>
+      <button onclick="openAddModal()" class="bg-accent-400 text-dark-900 font-semibold px-6 py-2.5 rounded-xl text-sm">
+        <i class="fas fa-plus mr-1"></i>Добавить
+      </button>
+    </div>
+  </section>
+
+  <!-- TAB: SERVICES -->
+  <section id="content-services" class="px-4 py-4 hidden">
+    <div class="space-y-3">
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-plug-circle-bolt text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Полная разводка электрики</h3>
+            <p class="text-xs text-gray-400 mt-1">Проектирование и монтаж электропроводки с нуля в новостройках и при ремонте</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-lightbulb text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Монтаж освещения</h3>
+            <p class="text-xs text-gray-400 mt-1">Установка люстр, точечных светильников, LED-подсветки, декоративного света</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-plug text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Розетки и выключатели</h3>
+            <p class="text-xs text-gray-400 mt-1">Установка и перенос розеток, выключателей, диммеров, USB-розеток</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-server text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Сборка электрощитов</h3>
+            <p class="text-xs text-gray-400 mt-1">Проектирование и сборка щитов с автоматами, УЗО, реле напряжения</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-building text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Коммерческие объекты</h3>
+            <p class="text-xs text-gray-400 mt-1">Электрика для офисов, магазинов, ресторанов и промышленных объектов</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-house-signal text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Умный дом</h3>
+            <p class="text-xs text-gray-400 mt-1">Установка систем умного дома: автоматизация света, штор, климата</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 bg-accent-400/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-magnifying-glass text-accent-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm">Диагностика и ремонт</h3>
+            <p class="text-xs text-gray-400 mt-1">Поиск неисправностей, замена старой проводки, устранение коротких замыканий</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Work types -->
+    <div class="mt-6">
+      <h3 class="text-sm font-semibold text-gray-400 mb-3">Работаем с:</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <div class="bg-dark-800 border border-dark-600 rounded-xl p-3 text-center">
+          <i class="fas fa-building text-accent-400 text-lg mb-1"></i>
+          <p class="text-xs text-gray-300">Новостройки</p>
+        </div>
+        <div class="bg-dark-800 border border-dark-600 rounded-xl p-3 text-center">
+          <i class="fas fa-house text-accent-400 text-lg mb-1"></i>
+          <p class="text-xs text-gray-300">Частные дома</p>
+        </div>
+        <div class="bg-dark-800 border border-dark-600 rounded-xl p-3 text-center">
+          <i class="fas fa-briefcase text-accent-400 text-lg mb-1"></i>
+          <p class="text-xs text-gray-300">Офисы</p>
+        </div>
+        <div class="bg-dark-800 border border-dark-600 rounded-xl p-3 text-center">
+          <i class="fas fa-hammer text-accent-400 text-lg mb-1"></i>
+          <p class="text-xs text-gray-300">Реконструкция</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: CONTACT -->
+  <section id="content-contact" class="px-4 py-4 hidden">
+    <div class="space-y-3">
+      <!-- Phone -->
+      <a href="tel:+79298871237" class="block bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-accent-400/10 rounded-xl flex items-center justify-center">
+            <i class="fas fa-phone text-accent-400 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Позвонить</p>
+            <p class="font-bold text-lg">+7 929 887-12-37</p>
+          </div>
+          <i class="fas fa-chevron-right text-gray-600 ml-auto"></i>
+        </div>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/79298871237?text=Здравствуйте!%20Интересуют%20электромонтажные%20работы." target="_blank" class="block bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
+            <i class="fab fa-whatsapp text-green-400 text-xl"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Написать в WhatsApp</p>
+            <p class="font-semibold">Быстрый ответ</p>
+          </div>
+          <i class="fas fa-chevron-right text-gray-600 ml-auto"></i>
+        </div>
+      </a>
+
+      <!-- Telegram -->
+      <a href="https://t.me/+79298871237" target="_blank" class="block bg-dark-800 border border-dark-600 rounded-2xl p-4 card-hover">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
+            <i class="fab fa-telegram text-blue-400 text-xl"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Написать в Telegram</p>
+            <p class="font-semibold">Онлайн консультация</p>
+          </div>
+          <i class="fas fa-chevron-right text-gray-600 ml-auto"></i>
+        </div>
+      </a>
+
+      <!-- Location -->
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center">
+            <i class="fas fa-location-dot text-red-400 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Расположение</p>
+            <p class="font-semibold">г. Грозный</p>
+            <p class="text-xs text-gray-500">Выезд по всей Чеченской Республике</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule -->
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center">
+            <i class="fas fa-clock text-purple-400 text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Режим работы</p>
+            <p class="font-semibold">Пн—Сб: 8:00 — 20:00</p>
+            <p class="text-xs text-gray-500">Вс: по договорённости</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-6 bg-gradient-to-br from-accent-400/10 to-accent-600/5 border border-accent-400/20 rounded-2xl p-5 text-center">
+      <i class="fas fa-bolt text-accent-400 text-2xl mb-2"></i>
+      <h3 class="font-bold mb-1">Нужен электрик?</h3>
+      <p class="text-xs text-gray-400 mb-3">Бесплатная консультация и расчёт стоимости</p>
+      <a href="https://wa.me/79298871237?text=Здравствуйте!%20Хочу%20рассчитать%20стоимость%20электромонтажных%20работ." target="_blank" class="inline-block bg-accent-400 text-dark-900 font-bold px-6 py-2.5 rounded-xl text-sm">
+        Написать сейчас
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ADD PROJECT MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal-content fade-up">
+    <div class="p-4 border-b border-dark-600 flex items-center justify-between">
+      <h2 class="font-bold text-lg">Новый проект</h2>
+      <button onclick="closeAddModal()" class="w-8 h-8 bg-dark-700 rounded-full flex items-center justify-center text-gray-400 hover:text-white">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+    <div class="p-4 space-y-4">
+      <!-- Image upload -->
+      <div>
+        <label class="text-xs text-gray-400 mb-2 block font-medium">Фотографии (до 6 шт.)</label>
+        <div class="img-preview" id="imgPreview" onclick="document.getElementById('fileInput').click()">
+          <div class="placeholder" id="imgPlaceholder">
+            <i class="fas fa-camera text-2xl mb-1"></i>
+            <p class="text-xs">Нажмите чтобы добавить фото</p>
+          </div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
+        <div id="uploadedThumbs" class="upload-grid mt-2 hidden"></div>
+      </div>
+
+      <!-- Title -->
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Название</label>
+        <input type="text" id="projectTitle" placeholder="Например: Квартира в центре Грозного" class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent-400 transition-colors placeholder-gray-600">
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Описание работ</label>
+        <textarea id="projectDesc" rows="3" placeholder="Полная разводка, 24 точки, щит на 36 модулей..." class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent-400 transition-colors resize-none placeholder-gray-600"></textarea>
+      </div>
+
+      <!-- Category -->
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Тип объекта</label>
+        <select id="projectCategory" class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent-400 transition-colors appearance-none">
+          <option value="apartment">🏢 Квартира</option>
+          <option value="house">🏠 Частный дом</option>
+          <option value="office">🏬 Офис / Коммерция</option>
+          <option value="other">🔧 Другое</option>
+        </select>
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Статус</label>
+        <div class="flex gap-2">
+          <label class="flex-1 cursor-pointer">
+            <input type="radio" name="status" value="done" checked class="hidden peer">
+            <div class="peer-checked:bg-green-500/20 peer-checked:border-green-500 peer-checked:text-green-400 bg-dark-700 border border-dark-600 rounded-xl py-2.5 text-center text-sm transition-all">
+              ✅ Завершён
+            </div>
+          </label>
+          <label class="flex-1 cursor-pointer">
+            <input type="radio" name="status" value="progress" class="hidden peer">
+            <div class="peer-checked:bg-accent-400/20 peer-checked:border-accent-400 peer-checked:text-accent-400 bg-dark-700 border border-dark-600 rounded-xl py-2.5 text-center text-sm transition-all">
+              🔨 В работе
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button onclick="saveProject()" class="w-full bg-accent-400 text-dark-900 font-bold py-3 rounded-xl text-sm hover:bg-accent-500 transition-colors">
+        <i class="fas fa-check mr-1"></i>Сохранить проект
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROJECT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-content fade-up">
+    <div class="p-4 border-b border-dark-600 flex items-center justify-between">
+      <h2 class="font-bold text-lg">Редактировать</h2>
+      <button onclick="closeEditModal()" class="w-8 h-8 bg-dark-700 rounded-full flex items-center justify-center text-gray-400 hover:text-white">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+    <div class="p-4 space-y-4">
+      <input type="hidden" id="editId">
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Название</label>
+        <input type="text" id="editTitle" class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent-400 transition-colors">
+      </div>
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Описание</label>
+        <textarea id="editDesc" rows="3" class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent-400 transition-colors resize-none"></textarea>
+      </div>
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Тип объекта</label>
+        <select id="editCategory" class="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-sm outline-none focus:border-accent-400 transition-colors appearance-none">
+          <option value="apartment">🏢 Квартира</option>
+          <option value="house">🏠 Частный дом</option>
+          <option value="office">🏬 Офис / Коммерция</option>
+          <option value="other">🔧 Другое</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs text-gray-400 mb-1 block font-medium">Статус</label>
+        <div class="flex gap-2">
+          <label class="flex-1 cursor-pointer">
+            <input type="radio" name="editStatus" value="done" class="hidden peer">
+            <div class="peer-checked:bg-green-500/20 peer-checked:border-green-500 peer-checked:text-green-400 bg-dark-700 border border-dark-600 rounded-xl py-2.5 text-center text-sm transition-all">
+              ✅ Завершён
+            </div>
+          </label>
+          <label class="flex-1 cursor-pointer">
+            <input type="radio" name="editStatus" value="progress" class="hidden peer">
+            <div class="peer-checked:bg-accent-400/20 peer-checked:border-accent-400 peer-checked:text-accent-400 bg-dark-700 border border-dark-600 rounded-xl py-2.5 text-center text-sm transition-all">
+              🔨 В работе
+            </div>
+          </label>
+        </div>
+      </div>
+      <button onclick="updateProject()" class="w-full bg-accent-400 text-dark-900 font-bold py-3 rounded-xl text-sm">
+        <i class="fas fa-save mr-1"></i>Сохранить изменения
+      </button>
+      <div id="deleteSection"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="absolute top-4 right-4 w-10 h-10 bg-dark-800/80 rounded-full flex items-center justify-center text-white z-10">
+    <i class="fas fa-xmark text-lg"></i>
+  </button>
+  <button class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-dark-800/80 rounded-full flex items-center justify-center text-white z-10" onclick="event.stopPropagation();lightboxPrev()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  <button class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-dark-800/80 rounded-full flex items-center justify-center text-white z-10" onclick="event.stopPropagation();lightboxNext()">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+  <img id="lightboxImg" src="" alt="" onclick="event.stopPropagation()">
+  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-dark-800/80 px-3 py-1 rounded-full text-xs text-gray-300" id="lightboxCounter"></div>
+</div>
+
+<script>
+// ========== DATA ==========
+let projects = JSON.parse(localStorage.getItem('tankist_projects') || '[]');
+let uploadedImages = [];
+let lightboxImages = [];
+let lightboxIndex = 0;
+
+const categoryLabels = {
+  apartment: '🏢 Квартира',
+  house: '🏠 Частный дом',
+  office: '🏬 Офис / Коммерция',
+  other: '🔧 Другое'
+};
+
+const categoryColors = {
+  apartment: 'bg-blue-500/10 text-blue-400',
+  house: 'bg-green-500/10 text-green-400',
+  office: 'bg-purple-500/10 text-purple-400',
+  other: 'bg-gray-500/10 text-gray-400'
+};
+
+// ========== TABS ==========
+function switchTab(tab) {
+  ['projects','services','contact'].forEach(t => {
+    document.getElementById('content-'+t).classList.toggle('hidden', t !== tab);
+    document.getElementById('tab-'+t).classList.toggle('active', t === tab);
+  });
+}
+
+// ========== RENDER ==========
+function renderProjects() {
+  const list = document.getElementById('projects-list');
+  const empty = document.getElementById('empty-state');
+  const stat = document.getElementById('stat-projects');
+  
+  stat.textContent = projects.length;
+
+  if (projects.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+
+  empty.classList.add('hidden');
+  
+  list.innerHTML = projects.map((p, i) => {
+    const statusBadge = p.status === 'done' 
+      ? '<span class="badge bg-green-500/10 text-green-400"><i class="fas fa-check mr-1"></i>Завершён</span>'
+      : '<span class="badge bg-accent-400/10 text-accent-400"><i class="fas fa-hammer mr-1"></i>В работе</span>';
+    
+    const catBadge = `<span class="badge ${categoryColors[p.category]}">${categoryLabels[p.category]}</span>`;
+
+    let photoHTML = '';
+    if (p.images && p.images.length > 0) {
+      const count = Math.min(p.images.length, 4);
+      const gridClass = 'grid-' + count;
+      const imgs = p.images.slice(0, 4).map((img, idx) => {
+        let extra = '';
+        if (count === 4 && idx === 3 && p.images.length > 4) {
+          extra = `<div style="position:absolute;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;">+${p.images.length - 4}</div>`;
+        }
+        return `<div style="position:relative;overflow:hidden;"><img src="${img}" alt="" onclick="event.stopPropagation();openLightbox(${i},${idx})">${extra}</div>`;
+      }).join('');
+      photoHTML = `<div class="photo-grid ${gridClass} rounded-t-2xl overflow-hidden">${imgs}</div>`;
+    }
+
+    const date = new Date(p.date).toLocaleDateString('ru-RU', { day:'numeric', month:'short', year:'numeric' });
+
+    return `
+      <div class="bg-dark-800 border border-dark-600 rounded-2xl overflow-hidden card-hover fade-up">
+        ${photoHTML}
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-2">
+            <h3 class="font-bold text-sm leading-tight flex-1">${escapeHtml(p.title)}</h3>
+            <button onclick="openEditModal(${i})" class="w-7 h-7 bg-dark-700 rounded-full flex items-center justify-center text-gray-500 hover:text-accent-400 ml-2 flex-shrink-0 text-xs">
+              <i class="fas fa-pen"></i>
+            </button>
+          </div>
+          ${p.description ? `<p class="text-xs text-gray-400 mb-3 leading-relaxed">${escapeHtml(p.description)}</p>` : ''}
+          <div class="flex items-center justify-between">
+            <div class="flex gap-1.5 flex-wrap">${catBadge}${statusBadge}</div>
+            <span class="text-[10px] text-gray-600">${date}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(text) {
+  const d = document.createElement('div');
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+// ========== IMAGE UPLOAD ==========
+function handleImageUpload(event) {
+  const files = Array.from(event.target.files);
+  if (!files.length) return;
+
+  const remaining = 6 - uploadedImages.length;
+  const toProcess = files.slice(0, remaining);
+
+  toProcess.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Compress image
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const maxW = 800, maxH = 800;
+        let w = img.width, h = img.height;
+        if (w > maxW) { h = h * maxW / w; w = maxW; }
+        if (h > maxH) { w = w * maxH / h; h = maxH; }
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL('image/jpeg', 0.7);
+        uploadedImages.push(compressed);
+        renderUploadThumbs();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  event.target.value = '';
+}
+
+function renderUploadThumbs() {
+  const container = document.getElementById('uploadedThumbs');
+  const preview = document.getElementById('imgPreview');
+  const placeholder = document.getElementById('imgPlaceholder');
+
+  if (uploadedImages.length === 0) {
+    container.classList.add('hidden');
+    container.innerHTML = '';
+    placeholder.style.display = 'block';
+    preview.querySelector('img')?.remove();
+    return;
+  }
+
+  // Show first image in main preview
+  placeholder.style.display = 'none';
+  let mainImg = preview.querySelector('img');
+  if (!mainImg) {
+    mainImg = document.createElement('img');
+    preview.appendChild(mainImg);
+  }
+  mainImg.src = uploadedImages[0];
+
+  // Show all thumbs
+  container.classList.remove('hidden');
+  container.innerHTML = uploadedImages.map((img, i) => `
+    <div class="upload-thumb">
+      <img src="${img}" alt="">
+      <button class="remove-btn" onclick="event.stopPropagation();removeUploadImage(${i})"><i class="fas fa-xmark"></i></button>
+    </div>
+  `).join('') + (uploadedImages.length < 6 ? `
+    <div class="upload-thumb border-2 border-dashed border-dark-600 flex items-center justify-center cursor-pointer hover:border-accent-400 rounded-lg" onclick="document.getElementById('fileInput').click()" style="display:flex;align-items:center;justify-content:center;">
+      <i class="fas fa-plus text-gray-600"></i>
+    </div>
+  ` : '');
+}
+
+function removeUploadImage(index) {
+  uploadedImages.splice(index, 1);
+  renderUploadThumbs();
+}
+
+// ========== MODAL ==========
+function openAddModal() {
+  uploadedImages = [];
+  renderUploadThumbs();
+  document.getElementById('projectTitle').value = '';
+  document.getElementById('projectDesc').value = '';
+  document.getElementById('projectCategory').value = 'apartment';
+  document.querySelector('input[name="status"][value="done"]').checked = true;
+  document.getElementById('addModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function saveProject() {
+  const title = document.getElementById('projectTitle').value.trim();
+  if (!title) {
+    document.getElementById('projectTitle').style.borderColor = '#ef4444';
+    setTimeout(() => document.getElementById('projectTitle').style.borderColor = '', 2000);
+    return;
+  }
+
+  const project = {
+    id: Date.now(),
+    title: title,
+    description: document.getElementById('projectDesc').value.trim(),
+    category: document.getElementById('projectCategory').value,
+    status: document.querySelector('input[name="status"]:checked').value,
+    images: [...uploadedImages],
+    date: new Date().toISOString()
+  };
+
+  projects.unshift(project);
+  saveToStorage();
+  renderProjects();
+  closeAddModal();
+}
+
+// ========== EDIT ==========
+function openEditModal(index) {
+  const p = projects[index];
+  document.getElementById('editId').value = index;
+  document.getElementById('editTitle').value = p.title;
+  document.getElementById('editDesc').value = p.description || '';
+  document.getElementById('editCategory').value = p.category;
+  document.querySelector(`input[name="editStatus"][value="${p.status}"]`).checked = true;
+  
+  document.getElementById('deleteSection').innerHTML = `
+    <div class="delete-confirm">
+      <p class="text-xs text-red-400 mb-2 font-medium">Удалить этот проект?</p>
+      <button onclick="deleteProject(${index})" class="w-full bg-red-500/20 text-red-400 border border-red-500/30 py-2 rounded-xl text-sm font-semibold hover:bg-red-500/30 transition-colors">
+        <i class="fas fa-trash mr-1"></i>Удалить
+      </button>
+    </div>
+  `;
+
+  document.getElementById('editModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function updateProject() {
+  const index = parseInt(document.getElementById('editId').value);
+  projects[index].title = document.getElementById('editTitle').value.trim();
+  projects[index].description = document.getElementById('editDesc').value.trim();
+  projects[index].category = document.getElementById('editCategory').value;
+  projects[index].status = document.querySelector('input[name="editStatus"]:checked').value;
+  saveToStorage();
+  renderProjects();
+  closeEditModal();
+}
+
+function deleteProject(index) {
+  projects.splice(index, 1);
+  saveToStorage();
+  renderProjects();
+  closeEditModal();
+}
+
+// ========== LIGHTBOX ==========
+function openLightbox(projectIndex, imgIndex) {
+  lightboxImages = projects[projectIndex].images;
+  lightboxIndex = imgIndex;
+  showLightboxImage();
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function showLightboxImage() {
+  document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
+  document.getElementById('lightboxCounter').textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
+}
+
+function lightboxNext() {
+  lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+  showLightboxImage();
+}
+
+function lightboxPrev() {
+  lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+  showLightboxImage();
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lightbox').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') lightboxNext();
+  if (e.key === 'ArrowLeft') lightboxPrev();
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ========== STORAGE ==========
+function saveToStorage() {
+  try {
+    localStorage.setItem('tankist_projects', JSON.stringify(projects));
+  } catch(e) {
+    alert('Память устройства заполнена. Попробуйте удалить старые проекты или загружать фото меньшего размера.');
+  }
+}
+
+// ========== DEMO PROJECTS ==========
+function addDemoProjects() {
+  if (projects.length > 0) return;
+  
+  projects = [
+    {
+      id: 1,
+      title: 'Квартира в Грозный-Сити',
+      description: 'Полная разводка электрики в 3-комнатной квартире. 42 точки, щит на 36 модулей, LED-освещение по всей квартире.',
+      category: 'apartment',
+      status: 'done',
+      images: [],
+      date: new Date(Date.now() - 86400000 * 5).toISOString()
+    },
+    {
+      id: 2,
+      title: 'Частный дом 180 м²',
+      description: 'Электроснабжение двухэтажного дома: ввод 15кВт, трёхфазный щит, 86 точек, тёплые полы, система умного дома.',
+      category: 'house',
+      status: 'done',
+      images: [],
+      date: new Date(Date.now() - 86400000 * 12).toISOString()
+    },
+    {
+      id: 3,
+      title: 'Ресторан на пр. Путина',
+      description: 'Коммерческая электрика: силовые линии для кухни, декоративное освещение зала, аварийное освещение.',
+      category: 'office',
+      status: 'progress',
+      images: [],
+      date: new Date(Date.now() - 86400000 * 2).toISOString()
+    }
+  ];
+  saveToStorage();
+}
+
+// ========== INIT ==========
+addDemoProjects();
+renderProjects();
+
+// Close modals on overlay click
+document.getElementById('addModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAddModal();
+});
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeEditModal();
+});
+
+// Swipe for lightbox
+let touchStartX = 0;
+document.getElementById('lightbox').addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('lightbox').addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) lightboxNext();
+    else lightboxPrev();
+  }
+});
+</script>
+
+</body>
+</html>
