@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "title": "Квартира в ЖК «Грозный-Сити»",
+    "type": "Квартира",
+    "status": "Завершён",
+    "description": "Полная разводка электрики в трёхкомнатной квартире 120 м². Установка щита на 36 модулей, LED-освещение, тёплый пол.",
+    "photos": [
+      "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=800&h=600&fit=crop"
+    ],
+    "video": ""
+  },
+  {
+    "id": 2,
+    "title": "Частный дом в пос. Гикало",
+    "type": "Частный дом",
+    "status": "Завершён",
+    "description": "Электроснабжение двухэтажного дома 280 м². Трёхфазный ввод, стабилизатор, система «умный дом», наружное освещение участка.",
+    "photos": [
+      "https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=600&fit=crop"
+    ],
+    "video": "https://www.youtube.com/watch?v=example"
+  },
+  {
+    "id": 3,
+    "title": "Офис компании на пр. Путина",
+    "type": "Коммерческий объект",
+    "status": "Завершён",
+    "description": "Электромонтаж офиса 200 м². Серверная комната, структурированная кабельная система, аварийное освещение, панели LED.",
+    "photos": [
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop"
+    ],
+    "video": ""
+  }
+]
