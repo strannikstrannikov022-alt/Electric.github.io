@@ -1,241 +1,269 @@
-/* ===== TANKIST — app.js ===== */
-/* Чистый JavaScript, без фреймворков */
+/* ===========================
+   TANKIST — Электрик по Грозному
+   Основной JavaScript
+   =========================== */
 
-document.addEventListener('DOMContentLoaded', () => {
-  initMobileMenu();
-  initScrollReveal();
-  initSmoothScroll();
-  loadProjects();
+// ===== Мобильное меню =====
+function toggleMenu() {
+  const nav = document.getElementById('nav');
+  const burger = document.getElementById('burger');
+  nav.classList.toggle('active');
+  burger.classList.toggle('active');
+  document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+}
+
+function closeMenu() {
+  const nav = document.getElementById('nav');
+  const burger = document.getElementById('burger');
+  nav.classList.remove('active');
+  burger.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== Скролл шапки =====
+window.addEventListener('scroll', function () {
+  const header = document.getElementById('header');
+  if (window.scrollY > 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
 });
 
-/* ===== Мобильное меню ===== */
-function initMobileMenu() {
-  const toggle = document.querySelector('.menu-toggle');
-  const mobileNav = document.querySelector('.mobile-nav');
+// ===== Анимации при скролле =====
+function initScrollAnimations() {
+  const elements = document.querySelectorAll(
+    '.service-card, .client-card, .why-card, .process-card, .contact-card, .project-card'
+  );
 
-  if (!toggle || !mobileNav) return;
+  const observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry, index) {
+        if (entry.isIntersecting) {
+          // Задержка для каскадного эффекта
+          setTimeout(function () {
+            entry.target.classList.add('animate');
+          }, index * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
 
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('active');
-    mobileNav.classList.toggle('active');
-    document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
-  });
-
-  // Закрыть меню при клике на ссылку
-  mobileNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      toggle.classList.remove('active');
-      mobileNav.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  });
-}
-
-/* ===== Плавная прокрутка ===== */
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (target) {
-        const offset = 80;
-        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    });
+  elements.forEach(function (el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
   });
 }
 
-/* ===== Анимации при скролле ===== */
-function initScrollReveal() {
-  const reveals = document.querySelectorAll('.reveal');
+// При добавлении класса animate
+const style = document.createElement('style');
+style.textContent = `
+  .service-card.animate, .client-card.animate, .why-card.animate,
+  .process-card.animate, .contact-card.animate, .project-card.animate {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+`;
+document.head.appendChild(style);
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-  });
+// ===== Загрузка проектов из projects.json =====
+let currentProject = null;
+let currentSlide = 0;
 
-  reveals.forEach(el => observer.observe(el));
-}
-
-/* ===== Загрузка проектов из projects.json ===== */
 async function loadProjects() {
-  const container = document.getElementById('projects-container');
-  if (!container) return;
+  const grid = document.getElementById('projects-grid');
 
   try {
-    const response = await fetch('./projects.json');
-    if (!response.ok) throw new Error('Файл не найден');
+    const response = await fetch('projects.json');
+
+    if (!response.ok) {
+      throw new Error('Файл projects.json не найден');
+    }
+
     const projects = await response.json();
 
-    if (projects.length === 0) {
-      container.innerHTML = `
+    if (!projects || projects.length === 0) {
+      grid.innerHTML = `
         <div class="projects-empty">
-          <div class="empty-icon">📁</div>
+          <span>📂</span>
           <p>Проекты скоро появятся</p>
-        </div>`;
+        </div>
+      `;
       return;
     }
 
-    container.innerHTML = '';
-    projects.forEach(project => {
-      container.appendChild(createProjectCard(project));
+    grid.innerHTML = '';
+
+    projects.forEach(function (project) {
+      const card = createProjectCard(project);
+      grid.appendChild(card);
     });
 
+    // Повторно инициализируем анимации для новых карточек
+    initScrollAnimations();
+
   } catch (error) {
-    console.warn('Не удалось загрузить projects.json:', error);
-    container.innerHTML = `
+    console.warn('Не удалось загрузить проекты:', error.message);
+    grid.innerHTML = `
       <div class="projects-empty">
-        <div class="empty-icon">⚠️</div>
-        <p>Не удалось загрузить проекты</p>
-      </div>`;
+        <span>📂</span>
+        <p>Проекты загружаются...</p>
+        <p style="font-size: 0.8rem; margin-top: 8px;">Убедитесь, что файл projects.json находится рядом с index.html</p>
+      </div>
+    `;
   }
 }
 
-/* ===== Создание карточки проекта ===== */
+// ===== Создание карточки проекта =====
 function createProjectCard(project) {
   const card = document.createElement('div');
-  card.className = 'project-card reveal';
-  card.style.opacity = '1';
-  card.style.transform = 'none';
+  card.className = 'project-card';
 
-  const hasPhotos = project.photos && project.photos.length > 0;
-  const thumbHTML = hasPhotos
-    ? `<img src="${project.photos[0]}" alt="${project.title}" loading="lazy">
-       <div class="project-photo-count">📷 ${project.photos.length} фото</div>`
-    : `<div class="project-thumb-placeholder">🏗️</div>`;
-
-  const videoBtn = project.video
-    ? `<a href="${project.video}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">▶ Видео</a>`
-    : '';
-
-  card.innerHTML = `
-    <div class="project-thumb">${thumbHTML}</div>
-    <div class="project-info">
-      <div class="project-meta">
-        <span class="project-type">${project.type}</span>
-        <span class="project-status">${project.status}</span>
+  // Обложка
+  let coverHTML = '';
+  if (project.photos && project.photos.length > 0) {
+    coverHTML = `
+      <div class="project-cover" onclick='openGallery(${JSON.stringify(project.photos).replace(/'/g, "&#39;")}, "${escapeHTML(project.title)}")'>
+        <img src="${project.photos[0]}" alt="${escapeHTML(project.title)}" 
+             onerror="this.parentElement.innerHTML='<div class=\\'project-cover-placeholder\\'>⚡</div>'">
+        <div class="project-photo-count">📷 ${project.photos.length} фото</div>
       </div>
-      <h3>${project.title}</h3>
-      <p>${project.description}</p>
-      <div class="project-actions">
-        ${hasPhotos ? `<button class="btn btn-sm btn-primary" onclick="openGallery(${project.id})">🖼 Галерея</button>` : ''}
-        ${videoBtn}
+    `;
+  } else {
+    coverHTML = `
+      <div class="project-cover">
+        <div class="project-cover-placeholder">⚡</div>
       </div>
-    </div>`;
-
-  // Клик по карточке открывает галерею
-  if (hasPhotos) {
-    card.querySelector('.project-thumb').addEventListener('click', () => {
-      openGallery(project.id);
-    });
+    `;
   }
 
-  // Сохраняем данные для галереи
-  card.dataset.projectId = project.id;
-  if (!window.__projects) window.__projects = {};
-  window.__projects[project.id] = project;
+  // Кнопки
+  let actionsHTML = '';
+  const actions = [];
+
+  if (project.photos && project.photos.length > 0) {
+    actions.push(
+      `<button class="project-btn photos" onclick='openGallery(${JSON.stringify(project.photos).replace(/'/g, "&#39;")}, "${escapeHTML(project.title)}")'>📷 Фото (${project.photos.length})</button>`
+    );
+  }
+
+  if (project.video) {
+    actions.push(
+      `<a href="${project.video}" target="_blank" class="project-btn video">▶ Смотреть видео</a>`
+    );
+  }
+
+  if (actions.length > 0) {
+    actionsHTML = `<div class="project-actions">${actions.join('')}</div>`;
+  }
+
+  card.innerHTML = `
+    ${coverHTML}
+    <div class="project-body">
+      <div class="project-meta">
+        ${project.type ? `<span class="project-tag type">${escapeHTML(project.type)}</span>` : ''}
+        ${project.status ? `<span class="project-tag status">${escapeHTML(project.status)}</span>` : ''}
+      </div>
+      <h3>${escapeHTML(project.title)}</h3>
+      <p>${escapeHTML(project.description)}</p>
+      ${actionsHTML}
+    </div>
+  `;
 
   return card;
 }
 
-/* ===== Галерея / Lightbox ===== */
-let currentGallery = [];
-let currentIndex = 0;
+// ===== Экранирование HTML =====
+function escapeHTML(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
-function openGallery(projectId) {
-  const project = window.__projects[projectId];
-  if (!project || !project.photos || project.photos.length === 0) return;
+// ===== Галерея (Lightbox) =====
+function openGallery(photos, title) {
+  if (!photos || photos.length === 0) return;
 
-  currentGallery = project.photos;
-  currentIndex = 0;
+  currentProject = { photos: photos, title: title };
+  currentSlide = 0;
+  showSlide();
 
-  // Создаём lightbox, если его нет
-  let lightbox = document.getElementById('lightbox');
-  if (!lightbox) {
-    lightbox = document.createElement('div');
-    lightbox.id = 'lightbox';
-    lightbox.className = 'lightbox';
-    document.body.appendChild(lightbox);
-  }
-
-  renderLightbox(project.title);
+  const lightbox = document.getElementById('lightbox');
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
-function renderLightbox(title) {
-  const lightbox = document.getElementById('lightbox');
-  if (!lightbox) return;
-
-  const thumbsHTML = currentGallery.map((photo, i) => `
-    <div class="lightbox-thumb ${i === currentIndex ? 'active' : ''}" onclick="goToSlide(${i})">
-      <img src="${photo}" alt="Фото ${i + 1}" loading="lazy">
-    </div>
-  `).join('');
-
-  lightbox.innerHTML = `
-    <div class="lightbox-header">
-      <span class="lightbox-title">${title || 'Галерея'}</span>
-      <span class="lightbox-counter">${currentIndex + 1} / ${currentGallery.length}</span>
-      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-    </div>
-    <div class="lightbox-body">
-      ${currentGallery.length > 1 ? `<button class="lightbox-prev" onclick="prevSlide()">‹</button>` : ''}
-      <img src="${currentGallery[currentIndex]}" alt="Фото проекта">
-      ${currentGallery.length > 1 ? `<button class="lightbox-next" onclick="nextSlide()">›</button>` : ''}
-    </div>
-    <div class="lightbox-thumbs">${thumbsHTML}</div>`;
-
-  // Свайпы на мобильных
-  const body = lightbox.querySelector('.lightbox-body');
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  body.ontouchstart = (e) => { touchStartX = e.changedTouches[0].screenX; };
-  body.ontouchend = (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) nextSlide();
-      else prevSlide();
-    }
-  };
-}
-
 function closeLightbox() {
   const lightbox = document.getElementById('lightbox');
-  if (lightbox) {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
-  }
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+  currentProject = null;
+}
+
+function showSlide() {
+  if (!currentProject) return;
+
+  const img = document.getElementById('lightbox-img');
+  const caption = document.getElementById('lightbox-caption');
+  const counter = document.getElementById('lightbox-counter');
+
+  img.src = currentProject.photos[currentSlide];
+  img.alt = currentProject.title;
+  caption.textContent = currentProject.title;
+  counter.textContent = (currentSlide + 1) + ' / ' + currentProject.photos.length;
 }
 
 function nextSlide() {
-  currentIndex = (currentIndex + 1) % currentGallery.length;
-  renderLightbox(document.querySelector('.lightbox-title')?.textContent);
+  if (!currentProject) return;
+  currentSlide = (currentSlide + 1) % currentProject.photos.length;
+  showSlide();
 }
 
 function prevSlide() {
-  currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
-  renderLightbox(document.querySelector('.lightbox-title')?.textContent);
+  if (!currentProject) return;
+  currentSlide = (currentSlide - 1 + currentProject.photos.length) % currentProject.photos.length;
+  showSlide();
 }
 
-function goToSlide(index) {
-  currentIndex = index;
-  renderLightbox(document.querySelector('.lightbox-title')?.textContent);
-}
-
-// Закрытие по Escape
-document.addEventListener('keydown', (e) => {
+// Закрытие по клавишам
+document.addEventListener('keydown', function (e) {
+  if (!currentProject) return;
   if (e.key === 'Escape') closeLightbox();
   if (e.key === 'ArrowRight') nextSlide();
   if (e.key === 'ArrowLeft') prevSlide();
+});
+
+// Закрытие по клику на фон
+document.getElementById('lightbox').addEventListener('click', function (e) {
+  if (e.target === this || e.target.classList.contains('lightbox-content')) {
+    closeLightbox();
+  }
+});
+
+// Свайп на мобильном
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.getElementById('lightbox').addEventListener('touchstart', function (e) {
+  touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+document.getElementById('lightbox').addEventListener('touchend', function (e) {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+}, false);
+
+// ===== Инициализация =====
+document.addEventListener('DOMContentLoaded', function () {
+  loadProjects();
+  initScrollAnimations();
 });
