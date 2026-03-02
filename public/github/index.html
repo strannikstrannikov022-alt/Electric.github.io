@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TANKIST — Электрик по Грозному</title>
+  <meta name="description" content="Профессиональные электромонтажные работы под ключ в Грозном. Квартиры, дома, офисы. Звоните: +7 929 887-12-37">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">⚡</span> TANKIST
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#hero" class="nav-link" onclick="closeMenu()">Главная</a>
+        <a href="#services" class="nav-link" onclick="closeMenu()">Услуги</a>
+        <a href="#projects" class="nav-link" onclick="closeMenu()">Проекты</a>
+        <a href="#contacts" class="nav-link" onclick="closeMenu()">Контакты</a>
+      </nav>
+      <a href="tel:+79298871237" class="header-phone">
+        <span class="phone-icon">📞</span> +7 929 887-12-37
+      </a>
+      <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-effects">
+      <div class="spark spark-1"></div>
+      <div class="spark spark-2"></div>
+      <div class="spark spark-3"></div>
+      <div class="hero-glow"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-badge">⚡ Электромонтажные работы</div>
+      <h1 class="hero-title">
+        Профессиональная<br>
+        <span class="text-yellow">электрика под ключ</span>
+      </h1>
+      <p class="hero-subtitle">
+        Электрика — это основа безопасности и комфорта. Мы выполняем профессиональный
+        монтаж электросетей под ключ: от ввода питания до финальной установки розеток и освещения.
+      </p>
+      <div class="hero-buttons">
+        <a href="tel:+79298871237" class="btn btn-yellow">
+          📞 Позвонить
+        </a>
+        <a href="https://wa.me/79298871237" target="_blank" class="btn btn-outline">
+          💬 WhatsApp
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">лет опыта</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">300+</span>
+          <span class="stat-label">объектов</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">по нормам</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Наши услуги</span>
+        <h2 class="section-title">Что мы <span class="text-yellow">делаем</span></h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🔌</div>
+          <h3>Полная разводка электрики</h3>
+          <p>Проектирование и монтаж электропроводки с нуля в новостройках и при капитальном ремонте</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💡</div>
+          <h3>Монтаж освещения</h3>
+          <p>Установка люстр, точечных светильников, LED-подсветки, декоративного и уличного освещения</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔧</div>
+          <h3>Розетки и выключатели</h3>
+          <p>Установка, замена и перенос розеток, выключателей, диммеров, USB-розеток</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⚡</div>
+          <h3>Сборка электрощитов</h3>
+          <p>Проектирование и сборка распределительных щитов с автоматами, УЗО и реле напряжения</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🏢</div>
+          <h3>Коммерческие объекты</h3>
+          <p>Электромонтаж офисов, магазинов, ресторанов, складов и производственных помещений</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🛠️</div>
+          <h3>Ремонт проводки</h3>
+          <p>Поиск и устранение неисправностей, замена старой алюминиевой проводки на медную</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🏠</div>
+          <h3>Умный дом</h3>
+          <p>Установка систем умного дома: автоматизация освещения, розеток, климата, безопасности</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔍</div>
+          <h3>Диагностика</h3>
+          <p>Полная диагностика электросети, измерение сопротивления изоляции, тепловизионный контроль</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WITH WHOM ===== -->
+  <section class="section section-dark" id="clients">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Наши клиенты</span>
+        <h2 class="section-title">С кем мы <span class="text-yellow">работаем</span></h2>
+      </div>
+      <div class="clients-grid">
+        <div class="client-card">
+          <div class="client-icon">🏗️</div>
+          <h3>Новостройки</h3>
+          <p>Полная электрика с нуля — от проекта до сдачи. Работаем по плану застройщика или создаём свой.</p>
+        </div>
+        <div class="client-card">
+          <div class="client-icon">🏡</div>
+          <h3>Частные дома</h3>
+          <p>Ввод питания, разводка по этажам, подключение бойлеров, тёплых полов и генераторов.</p>
+        </div>
+        <div class="client-card">
+          <div class="client-icon">🏢</div>
+          <h3>Офисы и коммерция</h3>
+          <p>Электромонтаж с учётом требований пожарной безопасности и высоких нагрузок.</p>
+        </div>
+        <div class="client-card">
+          <div class="client-icon">🔨</div>
+          <h3>После реконструкции</h3>
+          <p>Замена устаревшей проводки, увеличение мощности, приведение к современным стандартам.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY US ===== -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Преимущества</span>
+        <h2 class="section-title">Почему выбирают <span class="text-yellow">нас</span></h2>
+        <p class="section-subtitle">Каждый проект рассчитывается индивидуально с учётом нагрузки, современных стандартов и будущих потребностей клиента.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">📐</div>
+          <h3>Индивидуальный расчёт</h3>
+          <p>Рассчитываем нагрузку под каждый объект — никаких шаблонных решений</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">📋</div>
+          <h3>Современные стандарты</h3>
+          <p>Работаем строго по ПУЭ и СНиП — ваша проводка пройдёт любую проверку</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🛡️</div>
+          <h3>Гарантия качества</h3>
+          <p>Даём гарантию на все виды работ — отвечаем за каждый кабель и соединение</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">⏳</div>
+          <h3>Надёжность на десятилетия</h3>
+          <p>Наша задача — чтобы электрика работала стабильно 30+ лет без проблем</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="section section-dark" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Портфолио</span>
+        <h2 class="section-title">Наши <span class="text-yellow">проекты</span></h2>
+        <p class="section-subtitle">Реальные объекты, которые мы сделали. Нажмите на проект, чтобы посмотреть фотографии.</p>
+      </div>
+      <div class="projects-grid" id="projects-grid">
+        <!-- Проекты загружаются из projects.json через JavaScript -->
+        <div class="projects-loading">
+          <div class="loader"></div>
+          <p>Загрузка проектов...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESS ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Как мы работаем</span>
+        <h2 class="section-title">Этапы <span class="text-yellow">работы</span></h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-number">01</div>
+          <h3>Заявка</h3>
+          <p>Вы оставляете заявку по телефону или WhatsApp. Обсуждаем задачу и договариваемся о выезде.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">02</div>
+          <h3>Осмотр и расчёт</h3>
+          <p>Выезжаем на объект, делаем замеры, составляем подробную смету. Без скрытых доплат.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">03</div>
+          <h3>Монтаж</h3>
+          <p>Выполняем все работы аккуратно и в срок. Используем только качественные материалы.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">04</div>
+          <h3>Сдача объекта</h3>
+          <p>Проверяем всё, показываем результат, подписываем акт. Даём гарантию на работы.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACTS ===== -->
+  <section class="section section-dark" id="contacts">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Свяжитесь с нами</span>
+        <h2 class="section-title">Контакты <span class="text-yellow">TANKIST</span></h2>
+        <p class="section-subtitle">Позвоните или напишите — ответим быстро, проконсультируем бесплатно.</p>
+      </div>
+      <div class="contacts-grid">
+        <div class="contact-info">
+          <div class="contact-card">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-label">Телефон</div>
+              <a href="tel:+79298871237" class="contact-value">+7 929 887-12-37</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">💬</div>
+            <div>
+              <div class="contact-label">WhatsApp</div>
+              <a href="https://wa.me/79298871237" target="_blank" class="contact-value">Написать в WhatsApp</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-label">Город</div>
+              <span class="contact-value">Грозный, Чеченская Республика</span>
+            </div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <div class="contact-label">Режим работы</div>
+              <span class="contact-value">Пн–Сб: 8:00 – 20:00</span>
+            </div>
+          </div>
+          <div class="contacts-buttons">
+            <a href="tel:+79298871237" class="btn btn-yellow btn-lg">📞 Позвонить сейчас</a>
+            <a href="https://wa.me/79298871237?text=Здравствуйте!%20Интересуют%20электромонтажные%20работы." target="_blank" class="btn btn-green btn-lg">💬 Написать в WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="logo">
+            <span class="logo-icon">⚡</span> TANKIST
+          </a>
+          <p>Профессиональные электромонтажные работы в Грозном. Надёжно, безопасно, по нормам.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Навигация</h4>
+          <a href="#hero">Главная</a>
+          <a href="#services">Услуги</a>
+          <a href="#projects">Проекты</a>
+          <a href="#contacts">Контакты</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Контакты</h4>
+          <a href="tel:+79298871237">+7 929 887-12-37</a>
+          <a href="https://wa.me/79298871237" target="_blank">WhatsApp</a>
+          <p>Грозный, ЧР</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 TANKIST. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== WHATSAPP FLOAT ===== -->
+  <a href="https://wa.me/79298871237?text=Здравствуйте!%20Интересуют%20электромонтажные%20работы." target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+    💬
+  </a>
+
+  <!-- ===== LIGHTBOX (Gallery) ===== -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <button class="lightbox-prev" onclick="prevSlide()">&#10094;</button>
+    <button class="lightbox-next" onclick="nextSlide()">&#10095;</button>
+    <div class="lightbox-content">
+      <img src="" alt="" id="lightbox-img">
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+      <div class="lightbox-counter" id="lightbox-counter"></div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
