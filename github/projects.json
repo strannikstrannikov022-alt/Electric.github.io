@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "title": "Квартира в ЖК «Грозный-Сити»",
+    "type": "Квартира",
+    "status": "Завершён",
+    "description": "Полная разводка электрики в 3-комнатной квартире 95 м². Монтаж щита на 36 модулей, LED-освещение, тёплый пол.",
+    "photos": [
+      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&h=600&fit=crop"
+    ],
+    "video": ""
+  },
+  {
+    "id": 2,
+    "title": "Частный дом в п. Гикало",
+    "type": "Частный дом",
+    "status": "Завершён",
+    "description": "Электромонтаж двухэтажного дома 180 м². Ввод 15 кВт, сборка трёхфазного щита, умное освещение, видеонаблюдение.",
+    "photos": [
+      "https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&h=600&fit=crop"
+    ],
+    "video": ""
+  },
+  {
+    "id": 3,
+    "title": "Ресторан «Барakat»",
+    "type": "Коммерция",
+    "status": "Завершён",
+    "description": "Полный электромонтаж ресторана 250 м². Силовые линии для кухни, декоративное освещение зала, аварийное освещение.",
+    "photos": [
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800&h=600&fit=crop"
+    ],
+    "video": "https://youtube.com"
+  }
+]
