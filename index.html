@@ -1,12 +1,142 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TANKIST — Электромонтажные работы в Грозном</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TANKIST — Электрик по Грозному</title>
+  <meta name="description" content="Профессиональные электромонтажные работы под ключ в Грозном. Квартиры, дома, офисы. Звоните: +7 929 887-12-37">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="public/github/assets/style.css">
+</head>
+<body>
+
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">⚡</span> TANKIST
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#hero" class="nav-link" onclick="closeMenu()">Главная</a>
+        <a href="#services" class="nav-link" onclick="closeMenu()">Услуги</a>
+        <a href="#projects" class="nav-link" onclick="closeMenu()">Проекты</a>
+        <a href="#contacts" class="nav-link" onclick="closeMenu()">Контакты</a>
+      </nav>
+      <a href="tel:+79298871237" class="header-phone">
+        <span class="phone-icon">📞</span> +7 929 887-12-37
+      </a>
+      <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-bg-effects">
+      <div class="spark spark-1"></div>
+      <div class="spark spark-2"></div>
+      <div class="spark spark-3"></div>
+      <div class="hero-glow"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-badge">⚡ Электромонтажные работы</div>
+      <h1 class="hero-title">
+        Профессиональная<br>
+        <span class="text-yellow">электрика под ключ</span>
+      </h1>
+      <p class="hero-subtitle">
+        Электрика — это основа безопасности и комфорта. Мы выполняем профессиональный
+        монтаж электросетей под ключ: от ввода питания до финальной установки розеток и освещения.
+      </p>
+      <div class="hero-buttons">
+        <a href="tel:+79298871237" class="btn btn-yellow">
+          📞 Позвонить
+        </a>
+        <a href="https://wa.me/79298871237" target="_blank" class="btn btn-outline">
+          💬 WhatsApp
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">лет опыта</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">300+</span>
+          <span class="stat-label">объектов</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">по нормам</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Что делаем</span>
+        <h2 class="section-title">Электромонтаж для любых объектов</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🏠</div>
+          <h3>Квартиры и дома</h3>
+          <p>Полная замена проводки, сборка щитов, установка розеток, освещения и автоматики.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🏢</div>
+          <h3>Офисы и бизнес</h3>
+          <p>Монтаж электрики для офисов, магазинов, салонов и других коммерческих помещений.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔌</div>
+          <h3>Под ключ</h3>
+          <p>От проекта и расчёта нагрузки до финального подключения и проверки всей системы.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Примеры</span>
+        <h2 class="section-title">Готовые решения</h2>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3>Новостройка</h3>
+          <p>Полный монтаж электрики в квартире: щит, линии, розетки, свет.</p>
+        </div>
+        <div class="project-card">
+          <h3>Частный дом</h3>
+          <p>Электрика с распределением нагрузки, уличным освещением и защитой линий.</p>
+        </div>
+        <div class="project-card">
+          <h3>Коммерческий объект</h3>
+          <p>Работы по электроснабжению для небольших кафе, офисов и точек продаж.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contacts" id="contacts">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Контакты</span>
+        <h2 class="section-title">Связь без посредников</h2>
+      </div>
+      <div class="contact-box">
+        <a href="tel:+79298871237" class="contact-link">📞 +7 929 887-12-37</a>
+        <a href="https://wa.me/79298871237" target="_blank" class="contact-link">💬 WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="public/github/assets/app.js"></script>
+</body>
 </html>
